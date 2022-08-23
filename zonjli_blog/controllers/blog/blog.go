@@ -70,12 +70,12 @@ func (b *BlogController) DoAdd() {
 
 	f, h, err := b.GetFile("cover")
 
-	defer f.Close()
-
 	var cover string
 	if err != nil {
 		cover = "static/upload/no_pic.jpg"
 	}
+	//先对err 进行判断，err != nil产生错误则先处理错误。err = nil ,这时候声明f.Close()不会出错
+	defer f.Close()
 
 	//生成时间戳，防止重名
 	timeUnix := time.Now().Unix()               //int64类型

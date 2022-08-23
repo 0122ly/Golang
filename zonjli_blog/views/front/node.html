@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../../static/js/jquery-3.6.0.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+
+    //评论列表
+    <ul class="list-group" id="cmt-list">
+        <li class="list-group-item">
+            <span class="badge" style="background-color: #f0ad4e ;">评论时间：</span>
+            <span class="badge" style="background-color: #5bc0de;">评论人：</span>
+            Item 1
+        </li>
+    </ul>
+
+    <form id="form1" action=""></form>
+
+    <script>
+        //Ajax请求
+        $.get() //语法：功能单一，专门用来发起get请求
+
+        $.get(url, [data], [callback])
+        // url      string    资源地址
+        // data     object    请求资源期间携带的参数
+        // callback function  请求成功的回调函数
+
+        //不带参数的get请求
+        $.get('服务器url', function (res) {
+            Console.log(res) //res是服务器返回的数据
+        })
+
+
+        $(function () {
+            $('#id_name').on('click', function () {
+                //请求内容
+                $.get('服务器url', function (res) {
+                    Console.log(res) //res是服务器返回的数据
+                })
+
+            })
+        });
+
+        $.post()//函数语法，功能单一的专门用来发起post请求，向服务器提交数据
+
+        $.post(url, [data], [callback])
+
+        $.post('服务器地址', { data }, function (res) {
+            Console.log(res)
+        })
+
+        $(function () {
+            $('#id_name').on('click', function () {
+                //请求内容
+                $.post('服务器地址', { data }, function (res) {
+                    Console.log(res)
+                })
+
+            })
+        });
+
+
+
+        $.ajax()//函数语法，是一个功能比较综合的函数允许对Ajax请求进行更详细的配置。
+
+        $.ajax({
+            type: '', //请求的方法 'GET' , 'POST'
+            url: '', //请求的URL地址
+            data: {}, //请求要携带的数据
+            success: function (res) { } //请求成功后的回调函数
+        });
+
+        $(function () {
+            $('#id_name').on('click', function () {
+                //请求内容
+                $.ajax({
+                    type: 'GET',
+                    url: 'url',
+                    data: {
+                        id: 1
+                    },
+                    success: function (res) {
+                        console.log(res)
+                    }
+                })
+
+            })
+        });
+
+        //表单提交的两种方式
+        $('#form1').on('submit', function (e) {
+            alert('监听到了表单提交事件')
+            //阻止表单的提交和页面的跳转
+            e.preventDefault()
+        })
+
+        $('#form1').submit(function (e) {
+            alert('监听到了表单提交事件2')
+            //阻止表单的提交和页面的跳转
+            e.preventDefault()
+        })
+
+        //快速获取表单中的数据
+        $(selector).serialize()
+        //可以一次性获取到表单中的全部数据
+
+        $('#form1').serialize()
+        //调用的结果
+        // username=用户名的值 &password=密码的值
+
+        $(function () {
+            $('#form1').submit(function (e) {
+                e.preventDefault()
+                var data = $(this).serialize()
+                console.log(data)
+            })
+        })
+
+        //获取评论内容渲染到页面中
+        function getCommentList() {
+            $.ajax({
+                method: 'GET',
+                url: 'url地址',
+                success: function (res) {
+                    if (res.status !== 200) return alert('获取评论失败')
+                    var rows = []
+                    $.each(res.data, function (i, item) {
+                        var str = '<li class="list-group-item"><span class="badge"style="background-color: #f0ad4e ;">评论时间: ' + item.time + '</span><span class="badge" style="background-color: #5bc0de;">评论人：' + item.username + '</span>Item 1</li>'
+                        rows.push(str)
+                    })
+                    $('#cmt-list').empty().append(rows.join(''))
+                }
+            })
+        }
+
+        getCommentList()
+
+        //添加评论并渲染
+        $(function(){
+            $('#fromAddCmt').submit(function (e){
+                e.preventDefault()
+                var data = $(this).serialize()
+                $.post('url请求链接',data,
+                function(res){
+                    if(res.status !==201){
+                        return alert('发表评论失败！')
+                    }
+                    getCommentList() //调用函数渲染评论列表
+                    //清空from表单 重置表单
+                    //通过id选择器获取到表单JQuery对象，调用[0]把JQuery对象转换为原生DOM对象，然后可以原生表单函数reset()
+                    $('#formAddCmt')[0].reset() 
+                })
+            })
+        })
+
+        //引用模板引擎渲染UI结构，不需要手动拼接字符串
+        // 模板引擎好处：减少字符串的拼接操作；使代码结构更清晰；使代码更易于阅读与维护
+        //art-template模板引擎
+        
+
+    </script>
+</body>
+
+</html>

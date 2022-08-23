@@ -1,36 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录</title>
+    <link rel="stylesheet" href="../../static/css/front/front_login.css">
+    <title>博客系统</title>
+    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
+<!-- <<< "urlfor LoginController.Post" >>> -->
+
 <body>
-    <div class="login">
-        <div class="message">个人博客登录管理</div>
-        <div id="darkbannerwrap"></div>
-        
-        <form action="{{urlfor "LoginController.Post"}}" method="post" class="layui-form" >
-            <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
-            <hr class="hr15">
-            <input name="password" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
-            <hr class="hr15">
-            <hr class="hr15">
-            <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
-            <hr class="hr20" >
-        </form>
-    </div>
+    <!-- action="/front" method="post" -->
+    <form class="login">
+        <div class="loginHead">
+            <p>用户登录</p>
+        </div>
+        <div class="login_zw">
+            <div class="usernameWrapDiv">
+                <div class="usernameLabel">
+                    <label>用户名</label>
+                </div>
+                <div class="usernameDiv">
+                    <input id="loginUsername" class=" adminInput" type="text" name="username" placeholder="输入用户名"
+                        autofocus>
+                </div>
+            </div>
+            <div class="usernameWrapDiv">
+                <div class="usernameLabel">
+                    <label>密&nbsp&nbsp&nbsp&nbsp码</label>
+                </div>
+                <div class="passwordDiv">
+                    <input id="loginPassword" class=" adminInput" type="password" name="password" placeholder="输入密码">
+                </div>
+            </div>
+            <div class="usernameWrapDiv">
+                <div class="usernameLabel">
+                    <label>验证码</label>
+                </div>
+                <div class="cardDiv">
+                    <input id="loginCard" class=" cardInput" type="text" name="card" placeholder="输入验证码">
+                </div>
+                <div class="codeDiv">
+                    <input id="loginCode" class=" codeInput" type="button"></input>
+                    <a href="#" id="unsee">看不清？</a>
+                </div>
+            </div>
+            <div class="usernameWrapDiv">
+                <div class="registerBtn">
+                    <input id="registerBtn" type="button" value="注册"></input>
+                </div>
+                <div class="submitDiv">
+                    <!-- onclick="validate()" -->
+                    <input id="loginBtn" type="button" class="submit" value="登录"></input>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <script>
-        $(function  () {
-            layui.use('form', function(){
-              var form = layui.form;
-            
-            });
-        })
+        //在全局定义验证码 
+        var code;
+        window.onload = createCode("#loginCode")
 
-        
+        function createCode(codeID) {
+            code = "";
+            // 验证码长度
+            var codeLength = 4;
+            // 验证码dom元素
+            var checkCode = $(codeID);
+            // var checkCode = document.getElementById("loginCode")
+            // 验证码随机数
+            var random = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+            for (var i = 0; i < codeLength; i++) {
+                // 随机数索引
+                var index = Math.floor(Math.random() * 36);//取得随机数的索引[0~35]
+                code += random[index];
+            }
+            // 将生成的随机验证码赋值
+            checkCode.val(code);
+        }
+
+        //校验验证码
+        function validate() {
+            var inputCode = document.getElementById("loginCard").value.toUpperCase(); //取得输入的验证码并转化为大写        
+            //若输入的验证码长度为0 
+            if (inputCode.length <= 0) {
+                //则弹出请输入验证码
+                alert("Empty Code!");
+                //若输入的验证码与产生的验证码不一致时  
+            } else if (inputCode != code) {
+                //则弹出验证码输入错误
+                alert("Error Code");
+                //刷新验证码 
+                createCode();
+                //清空文本框
+                document.getElementById("loginCard").value = "";
+            }
+            //输入正确时 
+            else {
+                alert("OK"); //弹出^-^  
+            }
+        }
+
+        //注册跳转
+        function jumpRe() {
+            window.location.href = "/register"
+        }
+
+        //登录跳转
+        function jumpLo() {
+            window.location.href = "/"
+        }
+
+        $('#loginCode').click(function () {
+            createCode('#loginCode');
+        });
+        $('#unsee').click(function () {
+            createCode('#loginCode');
+        });
+        $('#registerBtn').click(function () {
+            jumpRe('#registerBtn');
+        });
+        $('#loginBtn').click(function () {
+            jumpLo('loginBtn');
+        });
     </script>
 </body>
+
 </html>

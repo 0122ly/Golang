@@ -31,7 +31,7 @@ func (f *FrontLoginController) Post() {
 
 		f.SetSession("front_user_name", username)
 		fmt.Println("登录成功")
-		f.Redirect(beego.URLFor("IndexController.Get"), 302)
+		f.Redirect(beego.URLFor("IndexController.Get"), 302) //code
 	} else {
 		f.Redirect(beego.URLFor("FrontLoginController.Get"), 302)
 	}

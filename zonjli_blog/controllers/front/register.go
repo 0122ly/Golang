@@ -40,5 +40,5 @@ func (r *RegisterController) Post() {
 	if err != nil {
 		r.Ctx.WriteString("哎呀！用户名已被使用")
 	}
-	r.Redirect("login", 302) //跳转
+	// r.Redirect("login", 302) //跳转
 }

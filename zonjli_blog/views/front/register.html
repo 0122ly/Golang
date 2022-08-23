@@ -1,12 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/front/register.css">
+    <script type="text/javascript" src="../../static/js/jquery-3.6.0.js"></script>
     <title>注册</title>
 </head>
+
 <body>
-    
+    <form class="reg" id="reg">
+        <div class="reg_Head">
+            <p>用户注册</p>
+        </div>
+        <div class="reg_zw">
+            <div class="usernameWrapDiv">
+                <div class="usernameLabel">
+                    <label>用户名</label>
+                </div>
+                <div class="usernameDiv">
+                    <input id="reg_Username" class=" adminInput" type="text" name="username" placeholder="输入用户名"
+                        autofocus>
+                </div>
+            </div>
+            <div class="usernameWrapDiv">
+                <div class="usernameLabel">
+                    <label>密&nbsp&nbsp&nbsp&nbsp码</label>
+                </div>
+                <div class="passwordDiv">
+                    <input id="reg_Password" class=" adminInput" type="password" name="password" placeholder="请输入密码">
+                </div>
+            </div>
+            <div class="usernameWrapDiv">
+                <div class="usernameLabel">
+                    <label>确认密码</label>
+                </div>
+                <div class="passwordDiv">
+                    <input id="reg_Password" class=" adminInput" type="password" name="repassword"
+                        placeholder="请再次输入密码">
+                </div>
+            </div>
+            <div class="usernameWrapDiv">
+                <div class="registerBtn">
+                    <input id="registerBtn" type="submit" value="注册"></input>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+
+        function validate() {
+
+        }
+
+        $(function () {
+            $('#registerBtn').click(function (e) {
+                e.preventDefault()
+                $.ajax({
+                    type: 'post',
+                    url: '/register',
+                    dataType: 'json',
+                    data: $('#reg').serialize(),
+                    contentType: 'application/x-www-form-urlencoded',
+                    processData: false,
+                    success:function(data){
+                        if(data.code !== 200){
+                            return alert('注册失败')
+                        }else {
+                            alert('注册成功，正在跳转登录')
+                            sleep = 1
+                            window.location.href ="/login"
+                            
+                        }
+                    }
+                })
+
+            })
+        })
+
+
+    </script>
 </body>
+
 </html>
