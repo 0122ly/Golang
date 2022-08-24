@@ -35,7 +35,7 @@ func (f *FrontLoginController) Post() {
 
 	if exist_1 {
 		f.SetSession("front_user_name", username)
-		message.Success(nil)
+		message.Success(nil, "登录成功")
 		fmt.Println("登录成功")
 	} else {
 		message.Fail(500, "登录错误")
@@ -48,7 +48,6 @@ func (f *FrontLoginController) Post() {
 func (f *FrontLoginController) ExistUser() {
 	username := f.GetString("username")
 	message := models.Message{}
-	fmt.Println("dada")
 
 	if len("username") == 0 && username == "" {
 		fmt.Println("用户名不能为空")
@@ -59,7 +58,7 @@ func (f *FrontLoginController) ExistUser() {
 
 	if exist_2 {
 		f.SetSession("front_user_name", username)
-		message.Success("用户名可用")
+		message.Success(username, "用户名可用")
 	} else {
 		message.Fail(500, "用户名不存在")
 	}

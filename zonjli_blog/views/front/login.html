@@ -128,8 +128,7 @@
                     success: function (data) {
                         console.log(data);
                         if (data.Code == 200) {
-                            document.getElementById("loginUsername").focus();
-                            document.getElementById("loginUsername").select();
+                            alert(data.Msg)
                         }else{
                             alert(data.Msg)
                         }

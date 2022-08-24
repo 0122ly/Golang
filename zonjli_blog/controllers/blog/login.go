@@ -46,7 +46,7 @@ func (l *LoginController) Post() {
 
 	if exist {
 		l.SetSession("blog_user_name", username)
-		message.Success(nil)
+		message.Success(nil, "登陆成功")
 		fmt.Println("登录成功")
 	} else {
 		message.Fail(500, "登录错误")

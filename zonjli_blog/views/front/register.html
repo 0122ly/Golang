@@ -77,12 +77,9 @@
                     dataType: 'application/x-www-form-urlencoded',
                     success: function (data) {
                         if (data.code == 200) {
-                            alert(data.message)
-                            //获得焦点
-                            document.getElementById("reg_Username").focus();
-                            document.getElementById("reg_Username").select();
+                            alert(data.Msg)
                         } else {
-                            alert(data.message)
+                            alert(data.Msg)
                         }
                     }
                 })

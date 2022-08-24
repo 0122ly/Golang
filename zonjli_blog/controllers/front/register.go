@@ -45,7 +45,7 @@ func (r *RegisterController) Post() {
 		r.Ctx.WriteString("哎呀！用户名已被使用")
 		message.Fail(500, "用户名已被使用")
 	} else {
-		message.Success(nil)
+		message.Success(nil, "用户名可用")
 	}
 	r.Data["json"] = message
 	r.ServeJSON()
