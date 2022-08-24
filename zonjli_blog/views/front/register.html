@@ -38,13 +38,13 @@
                     <label>确认密码</label>
                 </div>
                 <div class="passwordDiv">
-                    <input id="reg_Password" class=" adminInput" type="password" name="repassword"
+                    <input id="confirmpwd" class=" adminInput" type="password" name="repassword"
                         placeholder="请再次输入密码">
                 </div>
             </div>
             <div class="usernameWrapDiv">
                 <div class="registerBtn">
-                    <input id="registerBtn" type="submit" value="注册"></input>
+                    <input id="registerBtn" type="button" value="注册"></input>
                 </div>
             </div>
         </div>
@@ -52,13 +52,67 @@
 
     <script>
 
-        function validate() {
+        function checkUser() {
+            var value = document.getElementById("reg_Username").value;
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                alert('用户名不能有特殊字符')
+                document.getElementById("reg_Username").focus();
+                document.getElementById("reg_Username").select();
+                return;
+            } else if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                alert()
+                document.getElementById("reg_Username").focus();
+                document.getElementById("reg_Username").select();
+                return;
+            } else if (/^\d+\d+\d$/.test(value)) {
+                alert('用户名不能全为数字')
+                document.getElementById("reg_Username").focus();
+                document.getElementById("reg_Username").select();
+                return;
+            } else {
+                $.ajax({
+                    url: '/register',
+                    type: 'get',
+                    data: "username=" + value,
+                    dataType: 'application/x-www-form-urlencoded',
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert(data.message)
+                            //获得焦点
+                            document.getElementById("reg_Username").focus();
+                            document.getElementById("reg_Username").select();
+                        } else {
+                            alert(data.message)
+                        }
+                    }
+                })
+            }
 
         }
 
+        function checkPwd() {
+            var value = document.getElementById("reg_Password").value;
+            if (value.length < 6 || value.length > 12) {
+                alert('密码必须6到12位，且不能出现空格');
+                $("#reg_Password").val("");
+                $("#reg_Password").focus();
+            }
+        }
+
+        function confirm() {
+            var value = document.getElementById("confirmpwd").value;
+            if ($('input[name=reg_Password]').val() !== value) {
+                alert('两次密码输入不一致！');
+                document.getElementById("confirmpwd").focus();
+                document.getElementById("confirmpwd").select();
+            }
+        }
+
+
+
         $(function () {
             $('#registerBtn').click(function (e) {
-                e.preventDefault()
+                // e.preventDefault()
                 $.ajax({
                     type: 'post',
                     url: '/register',
@@ -66,14 +120,12 @@
                     data: $('#reg').serialize(),
                     contentType: 'application/x-www-form-urlencoded',
                     processData: false,
-                    success:function(data){
-                        if(data.code !== 200){
-                            return alert('注册失败')
-                        }else {
-                            alert('注册成功，正在跳转登录')
-                            sleep = 1
-                            window.location.href ="/login"
-                            
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            alert('注册成功，点击确定跳转登录')
+                            window.location.href = "/login"
+                        } else {
+                            alert(data.Msg)
                         }
                     }
                 })

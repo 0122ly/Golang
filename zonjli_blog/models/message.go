@@ -6,12 +6,12 @@ type Message struct {
 	Msg  string
 }
 
-func (m *Message) Success() {
+func (m *Message) Success(data interface{}) {
 	m.Code = 200
-	m.Msg = "登陆成功"
+	m.Data = data
 }
 
-func (m *Message) Fail() {
+func (m *Message) Fail(code int, msg string) {
 	m.Code = 500
-	m.Msg = "密码错误"
+	m.Msg = msg
 }

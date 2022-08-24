@@ -88,5 +88,4 @@ func GetChild(pid int, comment_tree *models.CommentTree) {
 		comment_tree.Children = append(comment_tree.Children, &child)
 		GetChild(pid, &child)
 	}
-	return
 }

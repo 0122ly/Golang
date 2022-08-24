@@ -6,10 +6,12 @@ import (
 )
 
 func BlogLoginFilter(ctx *context.Context) {
-	blog_user_name := ctx.Input.Session("blog_user_name")
+	if ctx.Input.URI() != "/blog/login" { //过滤地址
+		blog_user_name := ctx.Input.Session("blog_user_name")
 
-	if blog_user_name == nil {
-		ctx.Redirect(302, beego.URLFor("LoginController.Get"))
+		if blog_user_name == nil {
+			ctx.Redirect(302, beego.URLFor("LoginController.Get"))
+		}
 	}
 }
 

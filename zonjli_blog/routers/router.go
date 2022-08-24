@@ -9,9 +9,9 @@ import (
 
 func init() {
 	//blog
-	beego.Router("/blog", &blog.LoginController{})
+	beego.Router("/blog/login", &blog.LoginController{})
 	beego.Router("/blog/main", &blog.MainController{})
-	beego.Router("blog/welcome", &blog.MainController{})
+	beego.Router("/blog/welcome", &blog.MainController{})
 	beego.Router("/blog/blog_list", &blog.BlogController{})
 	beego.Router("/blog/blog_to_add", &blog.BlogController{}, "get:ToAdd")
 	beego.Router("/blog/blog_do_add", &blog.BlogController{}, "post:DoAdd")
@@ -25,5 +25,6 @@ func init() {
 	beego.Router("/detail", &front.IndexController{}, "get:BlogDetail")
 	beego.Router("/register", &front.RegisterController{})
 	beego.Router("/login", &front.FrontLoginController{})
+	beego.Router("/login_user", &front.FrontLoginController{}, "get:ExistUser")
 
 }

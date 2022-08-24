@@ -19,7 +19,6 @@ type User struct {
 }
 
 func (l *LoginController) Get() {
-	fmt.Println("--------login get-------")
 	l.TplName = "blog/login.html"
 }
 
@@ -27,9 +26,17 @@ func (l *LoginController) Post() {
 
 	username := l.GetString("username")
 	password := l.GetString("password")
-	m := models.Message{}
+	message := models.Message{}
 	fmt.Println("username: " + username)
 	fmt.Println("password: " + password)
+
+	if len("username") == 0 && username == "" {
+		fmt.Println("用户名不能为空")
+	}
+
+	if len("password") == 0 && password == "" {
+		fmt.Println("用户名不能为空")
+	}
 
 	md5_pwd := utils.GetMd5(password)
 
@@ -39,13 +46,12 @@ func (l *LoginController) Post() {
 
 	if exist {
 		l.SetSession("blog_user_name", username)
-		m.Success()
+		message.Success(nil)
 		fmt.Println("登录成功")
 	} else {
-		m.Fail()
+		message.Fail(500, "登录错误")
 		fmt.Println("登录错误")
-		//l.Redirect(beego.URLFor("LoginController.Get"), 302) //重定向至登录页
 	}
-	l.Data["json"] = m.Data
+	l.Data["json"] = message
 	l.ServeJSON()
 }

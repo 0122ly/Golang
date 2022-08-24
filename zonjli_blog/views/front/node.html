@@ -142,27 +142,85 @@
         getCommentList()
 
         //添加评论并渲染
-        $(function(){
-            $('#fromAddCmt').submit(function (e){
+        $(function () {
+            $('#fromAddCmt').submit(function (e) {
                 e.preventDefault()
                 var data = $(this).serialize()
-                $.post('url请求链接',data,
-                function(res){
-                    if(res.status !==201){
-                        return alert('发表评论失败！')
-                    }
-                    getCommentList() //调用函数渲染评论列表
-                    //清空from表单 重置表单
-                    //通过id选择器获取到表单JQuery对象，调用[0]把JQuery对象转换为原生DOM对象，然后可以原生表单函数reset()
-                    $('#formAddCmt')[0].reset() 
-                })
+                $.post('url请求链接', data,
+                    function (res) {
+                        if (res.status !== 201) {
+                            return alert('发表评论失败！')
+                        }
+                        getCommentList() //调用函数渲染评论列表
+                        //清空from表单 重置表单
+                        //通过id选择器获取到表单JQuery对象，调用[0]把JQuery对象转换为原生DOM对象，然后可以原生表单函数reset()
+                        $('#formAddCmt')[0].reset()
+                    })
             })
         })
 
         //引用模板引擎渲染UI结构，不需要手动拼接字符串
         // 模板引擎好处：减少字符串的拼接操作；使代码结构更清晰；使代码更易于阅读与维护
         //art-template模板引擎
-        
+
+
+        //用户名校验
+        function checkUser() {
+            var value = document.getElementById("username").value;
+            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+                alert('用户名不能有特殊字符')
+                document.getElementById("username").focus();
+                document.getElementById("username").select();
+                return;
+            } else if (/(^\_)|(\__)|(\_+$)/.test(value)) {
+                alert()
+                document.getElementById("username").focus();
+                document.getElementById("username").select();
+                return;
+            } else if (/^\d+\d+\d$/.test(value)) {
+                alert('用户名不能全为数字')
+                document.getElementById("username").focus();
+                document.getElementById("username").select();
+                return;
+            } else {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/back/checkRegister',
+                    type: 'get',
+                    data: "username=" + value,
+                    dataType: 'json',
+                    success: function (res) {
+                        if (res.code == 101) {
+                            alert(res.message)
+                            //获得焦点
+                            document.getElementById("username").focus();
+                            document.getElementById("username").select();
+                        } else {
+                            alert(res.message)
+                        }
+                    }
+                })
+            }
+        }
+
+        //密码校验
+        function checkPwd() {
+            var value = document.getElementById("password").value;
+            if (value.length < 6 || value.length > 12) {
+                alert('密码必须6到12位，且不能出现空格');
+                $("#password").val("");
+                $("#password").focus();
+            }
+        }
+
+        function confirm() {
+            var value = document.getElementById("confirmpwd").value;
+            if ($('input[name=password]').val() !== value) {
+                alert('两次密码输入不一致！');
+                document.getElementById("confirmpwd").focus();
+                document.getElementById("confirmpwd").select();
+            }
+        }
+
 
     </script>
 </body>

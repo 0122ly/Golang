@@ -14,7 +14,7 @@ type User struct {
 	Age        int        `orm:"description(年龄)" json:"age"`
 	IsAdmin    int        `orm:"description(1是管理员,2是普通用户);default(2)" json:"is_admin"`
 	CreateTime time.Time  `orm:"auto_now_add;type(datetime);description(注册时间)" json:"create_time"`
-	Cover      string     `orm:"description(头像);default(static/upload/default.jpg)" json:"cover"`
+	Cover      string     `orm:"description(头像);default(static/upload/bq3.png)" json:"cover"`
 	Blogs      []*Blog    `orm:"reverse(many)" json:"blogs"`    //一对多
 	Comments   []*Comment `orm:"reverse(many)" json:"comments"` //一对多
 }

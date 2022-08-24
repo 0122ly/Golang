@@ -99,11 +99,6 @@
             }
         }
 
-        //登录跳转
-        function jumpLo() {
-            window.location.href = "/blog/main"
-        }
-
         $('#loginCode').click(function () {
             createCode('#loginCode');
         });
@@ -111,23 +106,26 @@
             createCode('#loginCode');
         });
         $('#loginBtn').click(function (e) {
-            e.preventDefault()
+            //e.preventDefault() //登录不跳转
             $.ajax({
-                url: '/blog',
+                url: '/blog/login',
                 type: 'post',
                 dataType: 'json',
                 data: $('#login').serialize(),
                 contentType: 'application/x-www-form-urlencoded',
                 processData: false,
                 success: function (data) {
-                    if(data.code ==200){
-                    window.location.href = "/blog/main" //判断后端返回数据，登录成功
-                    console.log('登录成功')
+                    if (data.Code == 200) {
+                        window.location.href = "/blog/main" //判断后端返回数据，登录成功
+                        console.log('登录成功')
+                    } else {
+                        alert(data.Msg)
+                        window.location.href = "/blog/login" //判断后端返回数据，登录失败
                     }
                 },
-                error: function (data) {
-                    window.location.href = "/blog" //判断后端返回数据，登录失败
-                }
+                // error: function (data) {
+                    
+                // }
 
             })
 

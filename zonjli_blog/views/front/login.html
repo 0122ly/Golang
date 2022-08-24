@@ -13,7 +13,7 @@
 
 <body>
     <!-- action="/front" method="post" -->
-    <form class="login">
+    <form class="login" id="login">
         <div class="loginHead">
             <p>用户登录</p>
         </div>
@@ -23,8 +23,8 @@
                     <label>用户名</label>
                 </div>
                 <div class="usernameDiv">
-                    <input id="loginUsername" class=" adminInput" type="text" name="username" placeholder="输入用户名"
-                        autofocus>
+                    <input id="loginUsername" class=" adminInput" type="text" name="username" onblur="checkUser()"
+                        placeholder="输入用户名" autofocus>
                 </div>
             </div>
             <div class="usernameWrapDiv">
@@ -40,7 +40,8 @@
                     <label>验证码</label>
                 </div>
                 <div class="cardDiv">
-                    <input id="loginCard" class=" cardInput" type="text" name="card" placeholder="输入验证码">
+                    <input id="loginCard" class=" cardInput" type="text" name="card" onblur="validate_code()"
+                        placeholder="输入验证码">
                 </div>
                 <div class="codeDiv">
                     <input id="loginCode" class=" codeInput" type="button"></input>
@@ -84,7 +85,7 @@
         }
 
         //校验验证码
-        function validate() {
+        function validate_code() {
             var inputCode = document.getElementById("loginCard").value.toUpperCase(); //取得输入的验证码并转化为大写        
             //若输入的验证码长度为0 
             if (inputCode.length <= 0) {
@@ -93,15 +94,50 @@
                 //若输入的验证码与产生的验证码不一致时  
             } else if (inputCode != code) {
                 //则弹出验证码输入错误
-                alert("Error Code");
+                alert("验证码错误，请重新输入");
                 //刷新验证码 
-                createCode();
+                //createCode("#loginCode");
                 //清空文本框
                 document.getElementById("loginCard").value = "";
             }
             //输入正确时 
             else {
-                alert("OK"); //弹出^-^  
+                //不弹出框
+            }
+        }
+
+        //校验用户名
+        function checkUser() {
+            var username = document.getElementById("loginUsername").value;
+            if (username.length == 0) {
+                alert("用户名不能为空")
+            } else if (username.length < 5 && username.length > 0) {
+                alert("用户名不能少于5位")
+                document.getElementById("loginUsername").value = "";
+            } else if (username.length > 10) {
+                alert("用户名不能超过10位")
+                document.getElementById("loginUsername").value = "";
+            } else {
+                console.log(username);
+                $.ajax({
+                    url: '/login_user',//url: '/login_user?username=' + username,
+                    type: 'get',
+                    data: 'username='+ username,
+                    contentType: 'application/x-www-form-urlencoded',
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                        if (data.Code == 200) {
+                            document.getElementById("loginUsername").focus();
+                            document.getElementById("loginUsername").select();
+                        }else{
+                            alert(data.Msg)
+                        }
+                    },
+                    fail: function (data) {
+                        console.log("失败");
+                    }
+                })
             }
         }
 
@@ -110,22 +146,40 @@
             window.location.href = "/register"
         }
 
-        //登录跳转
-        function jumpLo() {
-            window.location.href = "/"
-        }
-
         $('#loginCode').click(function () {
             createCode('#loginCode');
         });
         $('#unsee').click(function () {
             createCode('#loginCode');
         });
+        $('#loginBtn').click(function () {
+            validate('#loginBtn')
+        });
         $('#registerBtn').click(function () {
             jumpRe('#registerBtn');
         });
-        $('#loginBtn').click(function () {
-            jumpLo('loginBtn');
+        $('#loginBtn').click(function (e) {
+            //e.preventDefault() //登录不跳转
+
+            $.ajax({
+                url: '/login',
+                type: 'post',
+                dataType: 'json',
+                data: $('#login').serialize(),
+                contentType: 'application/x-www-form-urlencoded',
+                processData: false,
+                success: function (data) {
+                    if (data.Code == 200) {
+                        window.location.href = "/" //判断后端返回数据，登录成功
+                        console.log('登录成功')
+
+                    } else {
+                        alert(data.Msg)
+                        window.location.href = "/login" //判断后端返回数据，登录失败
+                    }
+                }
+            })
+
         });
     </script>
 </body>

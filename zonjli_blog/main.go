@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	_ "zonjli_blog/routers"
+	"zonjli_blog/utils"
 	_ "zonjli_blog/utils"
 
 	"github.com/beego/beego/v2/client/orm"
@@ -38,7 +39,7 @@ func init() {
 func main() {
 	orm.Debug = true
 
-	//beego.InsertFilter("/blog/*", beego.BeforeRouter, utils.BlogLoginFilter)
+	beego.InsertFilter("/blog/*", beego.BeforeRouter, utils.BlogLoginFilter)
 	orm.RunCommand()
 	beego.Run()
 }
