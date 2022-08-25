@@ -1,12 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Index头部</title>
 </head>
+
 <body>
-    
+
+    头部
+    <header>
+        <nav>
+            <ul>
+                <li><a href="/">首页</a></li>
+                <li><a href="/nav/Go">Go</a></li>
+                <li><a href="/nav/C#">C#</a></li>
+                <li><a href="/nav/Python">Python</a></li>
+                <li><a href="/nav/Java">Java</a></li>
+                <li><a href="/"></a>博主信息</li>
+
+                    <<<if compare .username "" >>> 
+                    <li style="float: right">
+                        <a href="/login">登录</a>
+                    </li>
+                    <li style="float: right">
+                        <a href="/register">注册</a></a>
+                    </li>
+                    <<<else>>>
+                        <li style="float: right">
+                            <a href="#">
+                                <<< .usernaem >>>
+                            </a>
+                        </li>
+                    <<<end>>>
+            </ul>
+        </nav>
+    </header>
 </body>
+
 </html>

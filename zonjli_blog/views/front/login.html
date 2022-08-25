@@ -7,13 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../static/css/front/front_login.css">
     <title>博客系统</title>
-    <script type="text/javascript" src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/js/jquery-3.6.0.js"></script>
 </head>
 <!-- <<< "urlfor LoginController.Post" >>> -->
 
 <body>
     <!-- action="/front" method="post" -->
-    <form class="login" id="login">
+    <form class="login" id="login" onsubmit="return false">
         <div class="loginHead">
             <p>用户登录</p>
         </div>
@@ -111,30 +111,20 @@
             var username = document.getElementById("loginUsername").value;
             if (username.length == 0) {
                 alert("用户名不能为空")
-            } else if (username.length < 5 && username.length > 0) {
-                alert("用户名不能少于5位")
-                document.getElementById("loginUsername").value = "";
-            } else if (username.length > 10) {
-                alert("用户名不能超过10位")
-                document.getElementById("loginUsername").value = "";
-            } else {
-                console.log(username);
+                //document.getElementById("loginUsername").focus();
+            }else {
                 $.ajax({
-                    url: '/login_user',//url: '/login_user?username=' + username,
+                    url: '/loginUser',//url: '/login_user?username=' + username,
                     type: 'get',
-                    data: 'username='+ username,
-                    contentType: 'application/x-www-form-urlencoded',
-                    processData: false,
+                    data: 'username=' + username,
+                    // contentType: 'application/x-www-form-urlencoded',
+                    // processData: false,
                     success: function (data) {
-                        console.log(data);
                         if (data.Code == 200) {
-                            alert(data.Msg)
-                        }else{
+                            console.log(data.Msg);
+                        } else {
                             alert(data.Msg)
                         }
-                    },
-                    fail: function (data) {
-                        console.log("失败");
                     }
                 })
             }
@@ -152,26 +142,24 @@
             createCode('#loginCode');
         });
         $('#loginBtn').click(function () {
-            validate('#loginBtn')
+            validate_code('#loginBtn')
         });
         $('#registerBtn').click(function () {
             jumpRe('#registerBtn');
         });
-        $('#loginBtn').click(function (e) {
-            //e.preventDefault() //登录不跳转
-
+        $('#loginBtn').click(function () {
             $.ajax({
-                url: '/login',
-                type: 'post',
-                dataType: 'json',
+                url: "/login",
+                type: "post",
+                dataType: "json",
                 data: $('#login').serialize(),
-                contentType: 'application/x-www-form-urlencoded',
+                contentType: "application/x-www-form-urlencoded",
                 processData: false,
                 success: function (data) {
+                    console.log(data.Code);
                     if (data.Code == 200) {
                         window.location.href = "/" //判断后端返回数据，登录成功
                         console.log('登录成功')
-
                     } else {
                         alert(data.Msg)
                         window.location.href = "/login" //判断后端返回数据，登录失败

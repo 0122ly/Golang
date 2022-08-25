@@ -24,7 +24,8 @@ func init() {
 	beego.Router("/comment", &front.CommentController{})
 	beego.Router("/detail", &front.IndexController{}, "get:BlogDetail")
 	beego.Router("/register", &front.RegisterController{})
+	beego.Router("/regUser", &front.RegisterController{}, "get:ExistUser")
 	beego.Router("/login", &front.FrontLoginController{})
-	beego.Router("/login_user", &front.FrontLoginController{}, "get:ExistUser")
+	beego.Router("/loginUser", &front.FrontLoginController{}, "get:ExistUser")
 
 }

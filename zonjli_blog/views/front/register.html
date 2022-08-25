@@ -21,8 +21,8 @@
                     <label>用户名</label>
                 </div>
                 <div class="usernameDiv">
-                    <input id="reg_Username" class=" adminInput" type="text" name="username" placeholder="输入用户名"
-                        autofocus>
+                    <input id="reg_Username" class=" adminInput" type="text" name="username" onblur="checkUser()"
+                        placeholder="输入用户名" autofocus>
                 </div>
             </div>
             <div class="usernameWrapDiv">
@@ -30,7 +30,8 @@
                     <label>密&nbsp&nbsp&nbsp&nbsp码</label>
                 </div>
                 <div class="passwordDiv">
-                    <input id="reg_Password" class=" adminInput" type="password" name="password" placeholder="请输入密码">
+                    <input id="reg_Password" class=" adminInput" type="password" name="password" onblur="checkPwd()"
+                        placeholder="请输入密码">
                 </div>
             </div>
             <div class="usernameWrapDiv">
@@ -38,7 +39,7 @@
                     <label>确认密码</label>
                 </div>
                 <div class="passwordDiv">
-                    <input id="confirmpwd" class=" adminInput" type="password" name="repassword"
+                    <input id="confirmpwd" class=" adminInput" type="password" name="repassword" onblur="confirm()"
                         placeholder="请再次输入密码">
                 </div>
             </div>
@@ -53,33 +54,26 @@
     <script>
 
         function checkUser() {
-            var value = document.getElementById("reg_Username").value;
-            if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
-                alert('用户名不能有特殊字符')
-                document.getElementById("reg_Username").focus();
-                document.getElementById("reg_Username").select();
-                return;
-            } else if (/(^\_)|(\__)|(\_+$)/.test(value)) {
-                alert()
-                document.getElementById("reg_Username").focus();
-                document.getElementById("reg_Username").select();
-                return;
-            } else if (/^\d+\d+\d$/.test(value)) {
-                alert('用户名不能全为数字')
-                document.getElementById("reg_Username").focus();
-                document.getElementById("reg_Username").select();
+            var username = document.getElementById("reg_Username").value;
+            if (!new RegExp("^[a-zA-Z0-9-_]{5,10}$").test(username)) {
+                alert('用户名只能使用字母，数字，下划线，长度为5-10')
                 return;
             } else {
                 $.ajax({
-                    url: '/register',
+                    url: '/regUser',
                     type: 'get',
-                    data: "username=" + value,
-                    dataType: 'application/x-www-form-urlencoded',
+                    data: "username=" + username,
+                    // dataType: 'application/x-www-form-urlencoded',
+                    // dataType: 'json',
+                    // processData: false,
+                    // async: false,
                     success: function (data) {
-                        if (data.code == 200) {
-                            alert(data.Msg)
+                        console.log(data);
+                        if (data.Code != 200) {
+                            alert("用户名已存在，麻烦重新输入")
+                            document.getElementById("reg_Username").value = "";
                         } else {
-                            alert(data.Msg)
+
                         }
                     }
                 })
@@ -88,17 +82,17 @@
         }
 
         function checkPwd() {
-            var value = document.getElementById("reg_Password").value;
-            if (value.length < 6 || value.length > 12) {
-                alert('密码必须6到12位，且不能出现空格');
+            var username = document.getElementById("reg_Password").value;
+            if (username.length < 5 || username.length > 10) {
+                alert('密码必须5到10位,且不能出现空格');
                 $("#reg_Password").val("");
                 $("#reg_Password").focus();
             }
         }
 
         function confirm() {
-            var value = document.getElementById("confirmpwd").value;
-            if ($('input[name=reg_Password]').val() !== value) {
+            var username = document.getElementById("confirmpwd").value;
+            if ($('input[name=reg_Password]').val() !== username) {
                 alert('两次密码输入不一致！');
                 document.getElementById("confirmpwd").focus();
                 document.getElementById("confirmpwd").select();
@@ -108,7 +102,7 @@
 
 
         $(function () {
-            $('#registerBtn').click(function (e) {
+            $('#registerBtn').click(function () {
                 // e.preventDefault()
                 $.ajax({
                     type: 'post',
@@ -128,7 +122,7 @@
                 })
 
             })
-        })
+        });
 
 
     </script>

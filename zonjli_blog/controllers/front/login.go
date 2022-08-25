@@ -19,6 +19,7 @@ type User struct {
 }
 
 func (f *FrontLoginController) Get() {
+	fmt.Println("?????????")
 	f.TplName = "front/login.html"
 }
 
@@ -56,11 +57,11 @@ func (f *FrontLoginController) ExistUser() {
 
 	exist_2 := o.QueryTable(new(models.User)).Filter("user_name", username).Exist()
 
-	if exist_2 {
+	if !exist_2 {
 		f.SetSession("front_user_name", username)
-		message.Success(username, "用户名可用")
+		message.Fail(username, "用户名不存在,请先注册")
 	} else {
-		message.Fail(500, "用户名不存在")
+		message.Success(username, "用户名存在，请登录")
 	}
 	f.Data["json"] = message
 	f.ServeJSON()

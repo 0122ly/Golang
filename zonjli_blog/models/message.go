@@ -12,7 +12,8 @@ func (m *Message) Success(data interface{}, msg string) {
 	m.Msg = msg
 }
 
-func (m *Message) Fail(code int, msg string) {
+func (m *Message) Fail(data interface{}, msg string) {
 	m.Code = 500
+	m.Data = data
 	m.Msg = msg
 }

@@ -7,6 +7,7 @@ import (
 type Blog struct {
 	Id         int        `orm:"pk;auto" json:"id"`
 	Title      string     `orm:"description(博客标题)" json:"title"`
+	Type       string     `orm:"description(博客类型)" json:"type"`
 	Desc       string     `orm:"description(博客描述)" json:"desc"`
 	Content    string     `orm:"size(4000);description(博客内容)" json:"content"`
 	Cover      string     `orm:"description(博客封面);default(static/upload/no_pic.jpg)" json:"cover"`

@@ -117,14 +117,14 @@
                 success: function (data) {
                     if (data.Code == 200) {
                         window.location.href = "/blog/main" //判断后端返回数据，登录成功
-                        console.log('登录成功')
+                        alert(data.Msg)
                     } else {
                         alert(data.Msg)
                         window.location.href = "/blog/login" //判断后端返回数据，登录失败
                     }
                 },
                 // error: function (data) {
-                    
+
                 // }
 
             })
