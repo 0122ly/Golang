@@ -39,7 +39,7 @@ func init() {
 func main() {
 	orm.Debug = true
 
-	beego.InsertFilter("/blog/*", beego.BeforeRouter, utils.BlogLoginFilter)
+	beego.InsertFilter("/blog/main/*", beego.BeforeRouter, utils.BlogLoginFilter)
 	orm.RunCommand()
 	beego.Run()
 }

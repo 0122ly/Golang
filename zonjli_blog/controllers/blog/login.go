@@ -42,15 +42,36 @@ func (l *LoginController) Post() {
 
 	o := orm.NewOrm()
 
-	exist := o.QueryTable(new(models.User)).Filter("userName", username).Filter("password", md5_pwd).Exist()
+	exist_1 := o.QueryTable(new(models.User)).Filter("userName", username).Filter("password", md5_pwd).Exist()
 
-	if exist {
+	if exist_1 {
 		l.SetSession("blog_user_name", username)
 		message.Success(nil, "登陆成功")
 		fmt.Println("登录成功")
 	} else {
 		message.Fail(500, "登录错误")
 		fmt.Println("登录错误")
+	}
+	l.Data["json"] = message
+	l.ServeJSON()
+}
+
+func (l *LoginController) ExistUser() {
+	username := l.GetString("username")
+	message := models.Message{}
+
+	if len("username") == 0 && username == "" {
+		fmt.Println("用户名不能为空")
+	}
+	o := orm.NewOrm()
+
+	exist_2 := o.QueryTable(new(models.User)).Filter("user_name", username).Exist()
+
+	if !exist_2 {
+		l.SetSession("blog_user_name", username)
+		message.Fail(username, "该用户不是管理员哦！联系管理员升级权限吧")
+	} else {
+		message.Success(username, "尊敬的管理员，请登录")
 	}
 	l.Data["json"] = message
 	l.ServeJSON()

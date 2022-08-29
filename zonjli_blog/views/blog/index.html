@@ -4,9 +4,35 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/css/blog/blog_index.css">
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
     <title>博客后台管理</title>
 </head>
 <body>
+    <!-- 顶部开始 -->
+    <div class="container">
+        <div class="logo"><a href="/">blog评论</a></div>
+        <div class="left_open">
+            <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+        </div>
+
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+            <a href="javascript:;">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+              <dd><a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a></dd>
+              <dd><a href="/blog">退出</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item to-index"><a href="/" target="_blank">前台首页</a></li>
+        </ul>
+    </div>
     这是后台
+
+     fani
+     <<<template "blog/welcome.html" .>>>
+      <!-- <iframe src='<<<urlfor "MainController.Welcome">>>' frameborder="0" scrolling="yes" class="x-iframe"></iframe> -->
 </body>
+
+
 </html>

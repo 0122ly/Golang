@@ -6,7 +6,7 @@ import (
 )
 
 func BlogLoginFilter(ctx *context.Context) {
-	if ctx.Input.URI() != "/blog/login" { //过滤地址
+	if ctx.Input.URI() != "/blog" { //过滤地址
 		blog_user_name := ctx.Input.Session("blog_user_name")
 
 		if blog_user_name == nil {

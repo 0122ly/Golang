@@ -22,7 +22,7 @@
                 </div>
                 <div class="usernameDiv">
                     <input id="loginUsername" class=" adminInput" type="text" name="username" placeholder="输入用户名"
-                        autofocus>
+                        onblur="checkUser()" autofocus>
                 </div>
             </div>
             <div class="usernameWrapDiv">
@@ -38,7 +38,8 @@
                     <label>验证码</label>
                 </div>
                 <div class="cardDiv">
-                    <input id="loginCard" class=" cardInput" type="text" name="card" placeholder="输入验证码">
+                    <input id="loginCard" class=" cardInput" type="text" name="card" placeholder="输入验证码"
+                        onblur="validate_code()">
                 </div>
                 <div class="codeDiv">
                     <input id="loginCode" class=" codeInput" type="button"></input>
@@ -78,7 +79,7 @@
         }
 
         //校验验证码
-        function validate() {
+        function validate_code() {
             var inputCode = document.getElementById("loginCard").value.toUpperCase(); //取得输入的验证码并转化为大写        
             //若输入的验证码长度为0 
             if (inputCode.length <= 0) {
@@ -95,7 +96,32 @@
             }
             //输入正确时 
             else {
-                alert("OK"); //弹出^-^  
+                //   alert("OK"); //弹出^-^  
+            }
+        }
+
+        //校验用户名
+        function checkUser() {
+            var username = document.getElementById("loginUsername").value;
+            if (username.length == 0) {
+                alert("用户名不能为空")
+                // document.querySelector('#loginUsername').focus();
+                // document.querySelector('#loginUsername').setSelectionRange(0, username.length)
+            } else {
+                $.ajax({
+                    url: '/blogUser',//url: '/login_user?username=' + username,
+                    type: 'get',
+                    data: 'username=' + username,
+                    // contentType: 'application/x-www-form-urlencoded',
+                    // processData: false,
+                    success: function (data) {
+                        if (data.Code == 200) {
+                            console.log(data.Msg);
+                        } else {
+                            alert(data.Msg)
+                        }
+                    }
+                })
             }
         }
 
@@ -108,7 +134,7 @@
         $('#loginBtn').click(function (e) {
             //e.preventDefault() //登录不跳转
             $.ajax({
-                url: '/blog/login',
+                url: '/blog',
                 type: 'post',
                 dataType: 'json',
                 data: $('#login').serialize(),
@@ -116,11 +142,11 @@
                 processData: false,
                 success: function (data) {
                     if (data.Code == 200) {
-                        window.location.href = "/blog/main" //判断后端返回数据，登录成功
+                        window.location.href = "/blog/main/main" //判断后端返回数据，登录成功
                         alert(data.Msg)
                     } else {
                         alert(data.Msg)
-                        window.location.href = "/blog/login" //判断后端返回数据，登录失败
+                        window.location.href = "/blog" //判断后端返回数据，登录失败
                     }
                 },
                 // error: function (data) {

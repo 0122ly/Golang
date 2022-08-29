@@ -19,7 +19,6 @@ type User struct {
 }
 
 func (f *FrontLoginController) Get() {
-	fmt.Println("?????????")
 	f.TplName = "front/login.html"
 }
 

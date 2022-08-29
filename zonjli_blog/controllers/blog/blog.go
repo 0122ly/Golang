@@ -67,6 +67,7 @@ func (b *BlogController) DoAdd() {
 	title := b.GetString("title")
 	desc := b.GetString("desc")
 	content := b.GetString("content")
+	species := b.GetString("species")
 
 	f, h, err := b.GetFile("cover")
 
@@ -97,6 +98,7 @@ func (b *BlogController) DoAdd() {
 	o.QueryTable(new(models.User)).Filter("user_name", author).One(&user)
 	blog := models.Blog{
 		Title:   title,
+		Species: species,
 		Desc:    desc,
 		Content: content,
 		Cover:   cover,
